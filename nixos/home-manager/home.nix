@@ -14,11 +14,8 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
-    inputs.stylix.homeModules.stylix
     inputs.zen-browser.homeModules.beta
 
-    # ../modules/home-manager/work/work.nix
-    ../modules/home-manager/stylix.nix
 
     ../modules/home-manager/config/tmux.nix
     ../modules/home-manager/config/kitty.nix
@@ -48,17 +45,17 @@
   };
 
   home = {
-    username = "eduardo";
-    homeDirectory = "/home/eduardo";
+    username = "pilot";
+    homeDirectory = "/home/pilot";
   };
 
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [ 
     inputs.vicinae.packages.${system}.default
     (callPackage ../modules/home-manager/polycat.nix { })
-    tmux starship
+    tmux 
     tldr fastfetch ncdu dig httpie vhs #dstask
-    obs-studio bruno ferdium thunderbird high-tide
+    bruno ferdium thunderbird high-tide
     love
     devenv
 
@@ -79,40 +76,18 @@
   programs.home-manager.enable = true;
   programs.git = {
     enable = true;
-    userName = "Eduardo Função";
-    userEmail = "eduardofuncao@hotmail.com";
+    userName = "pilot";
     extraConfig = {
       core.editor = "nvim";
       init.defaultBranch = "main";
     };
   };
-  programs.starship = {
-    enable = true;
   };
   programs.zoxide = {
     enable = true;
   };
 
-  systemd.user.services.vicinae = {
-    Unit = {
-      Description = "Vicinae server daemon";
-      Documentation = [ "https://docs.vicinae.com" ];
-      After = [ "graphical-session.target" ];
-      PartOf = [ "graphical-session.target" ];
-      BindsTo = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "simple";
-      ExecStart = "${inputs.vicinae.packages.${pkgs.system}.default}/bin/vicinae server";
-      Restart = "always";
-      RestartSec = "5";
-      KillMode = "process";
-      Environment = "USE_LAYER_SHELL=1";
-    };
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
-    };
-  };
+  
 
 
   # # Create the systemd user service
@@ -197,5 +172,5 @@
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }
