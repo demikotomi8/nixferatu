@@ -14,7 +14,6 @@
 
     # You can also split up your configuration and import pieces of it here:
     ../modules/nixos/niri.nix
-    # ../modules/nixos/gaming.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -46,7 +45,7 @@
     in
     {
       settings = {
-        trusted-users = [ "root" "eduardo" ];
+        trusted-users = [ "root" "pilot" ];
         # Enable flakes and new 'nix' command
         experimental-features = "nix-command flakes";
         # Opinionated: disable global registry
@@ -63,8 +62,8 @@
     };
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/sda";
 
   # DM
   services.greetd = {
@@ -81,50 +80,43 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/Sao_Paulo";
+  time.timeZone = "America/New_York";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "pt_BR.UTF-8";
-    LC_IDENTIFICATION = "pt_BR.UTF-8";
-    LC_MEASUREMENT = "pt_BR.UTF-8";
-    LC_MONETARY = "pt_BR.UTF-8";
-    LC_NAME = "pt_BR.UTF-8";
-    LC_NUMERIC = "pt_BR.UTF-8";
-    LC_PAPER = "pt_BR.UTF-8";
-    LC_TELEPHONE = "pt_BR.UTF-8";
-    LC_TIME = "pt_BR.UTF-8";
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
   };
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "br";
+    layout = "en";
     variant = "";
   };
 
-  # Configure console keymap
-  console.keyMap = "br-abnt2";
-
   networking.hostName = "nixos";
-  users.defaultUserShell = pkgs.fish;
-  environment.shells = with pkgs; [ fish ];
-  programs.fish.enable = true;
-  programs.adb.enable = true;
+  users.defaultUserShell = pkgs.bash;
+  
 
   users.users = {
-    eduardo = {
+    pilot = {
       isNormalUser = true;
-      description = "Eduardo Funçao";
+      description = "pilot";
       # openssh.authorizedKeys.keys = [
       # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
       # ];
       extraGroups = [ "networkmanager" "wheel" "audio" "docker" "adbusers"];
     };
   };
-
-  hardware.bluetooth.enable = true;
 
   # Audio services
   security.rtkit.enable = true;
@@ -157,7 +149,6 @@
     curl
     jq
     unzip
-    kanata
     ripgrep
     zoxide
     fd
@@ -191,19 +182,5 @@
     quickemu
   ];
 
-  # This setups a SSH server. Very important if you're setting up a headless system.
-  # Feel free to remove if you don't need it.
-  #  services.openssh = {
-  #    enable = true;
-  #    settings = {
-  #      # Opinionated: forbid root login through SSH.
-  #      PermitRootLogin = "no";
-  #      # Opinionated: use keys only.
-  #      # Remove if you want to SSH using passwords
-  #      PasswordAuthentication = false;
-  #    };
-  #  };
-
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }
