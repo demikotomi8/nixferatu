@@ -15,7 +15,6 @@
     # You can also split up your configuration and import pieces of it here:
     ../modules/nixos/niri.nix
     # ../modules/nixos/gaming.nix
-    ../modules/nixos/kanata.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
